@@ -15,9 +15,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         // Check if the authenticated user has the 'ROLE_HR' authority
         boolean isHR = authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_HR"));
-        System.out.println("User Authorities: " + authentication.getAuthorities());
-        System.out.println("isHR: " + isHR);
-
+        boolean isVendor = authentication.getAuthorities().stream()
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_VENDOR"));
         if (isHR) {
             // Redirect HR users to the event requests page
             response.sendRedirect(request.getContextPath() + "/eventRequests");

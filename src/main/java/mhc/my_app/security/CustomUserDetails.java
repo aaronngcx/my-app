@@ -15,15 +15,17 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    // Constructor
     public CustomUserDetails(User user) {
-        this.username = user.getUsername(); // Get username from User entity
-        this.password = user.getPassword(); // Get password from User entity
+        this.username = user.getUsername();
+        this.password = user.getPassword();
 
-        // Assuming user.getRole() returns a single Role enum value
-        this.authorities = Collections.singletonList(
-                new SimpleGrantedAuthority(user.getRole().name()) // Ensure role has 'ROLE_' prefix
-        );
+        if (user.getRole() != null) {
+            this.authorities = Collections.singletonList(
+                    new SimpleGrantedAuthority(user.getRole().getAuthority())
+            );
+        } else {
+            this.authorities = Collections.emptyList();
+        }
     }
 
     @Override
@@ -38,26 +40,26 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username; // Return user's username
+        return username;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Set to true for simplicity, modify as needed
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // Set to true for simplicity, modify as needed
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Set to true for simplicity, modify as needed
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Set to true for simplicity, modify as needed
+        return true;
     }
 }

@@ -17,26 +17,26 @@
                 <table class="table table-striped table-hover align-middle">
                     <thead>
                         <tr>
-                            <th scope="col">[[#{eventRequest.id.label}]]</th>
+                            <th scope="col">[[#{eventRequest.event.label}]]</th>
                             <th scope="col">[[#{eventRequest.postalCode.label}]]</th>
                             <th scope="col">[[#{eventRequest.streetName.label}]]</th>
                             <th scope="col">[[#{eventRequest.remarks.label}]]</th>
                             <th scope="col">[[#{eventRequest.confirmedDate.label}]]</th>
+                            <th scope="col">[[#{eventRequest.proposedDate1.label}]]</th>
                             <th scope="col">[[#{eventRequest.status.label}]]</th>
-                            <th scope="col">[[#{eventRequest.event.label}]]</th>
                             <th scope="col">[[#{eventRequest.vendor.label}]]</th>
                             <th><!-- --></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="eventRequest : ${eventRequests}">
-                            <td>[[${eventRequest.id}]]</td>
+                            <td>[[${eventRequest.event}]]</td>
                             <td>[[${eventRequest.postalCode}]]</td>
                             <td>[[${eventRequest.streetName}]]</td>
                             <td>[[${eventRequest.remarks}]]</td>
                             <td>[[${eventRequest.confirmedDate}]]</td>
+                            <td>[[${eventRequest.proposedDate1}]]</td>
                             <td>[[${eventRequest.status}]]</td>
-                            <td>[[${eventRequest.event}]]</td>
                             <td>[[${eventRequest.vendor}]]</td>
                             <td>
                                 <div class="float-end text-nowrap">

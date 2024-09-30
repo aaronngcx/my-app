@@ -63,12 +63,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() { // Updated getter for username
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(final String username) { // Updated setter for username
-        this.username = username; // Corrected to match the field name
+    public void setUsername(final String username) {
+        this.username = username;
     }
 
     public String getName() {
