@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:mysql://localhost:3306/my-app?serverTimezone=UTC}
+    username: ${JDBC_DATABASE_USERNAME:aaron@localhost}
+    password: ${JDBC_DATABASE_PASSWORD:}
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        id:
+          new_generator_mappings: true
+
+  # Add logging configuration here
+  logging:
+    level:
+      root: ERROR  # Set root logging level to ERROR
+      org.springframework: ERROR  # Optional: Set logging level for Spring framework
+      your.package.name: ERROR  # Optional: Set logging level for your specific package
+
+error:
+  handling:
+    http-status-in-json-response: true
+    exception-logging: NO_LOGGING
+    full-stacktrace-http-statuses: 5xx
+    log-levels:
+      5xx: ERROR

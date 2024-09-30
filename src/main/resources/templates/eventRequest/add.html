@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{eventRequest.add.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{eventRequest.add.headline}]]</h1>
+                <div>
+                    <a th:href="@{/eventRequests}" class="btn btn-secondary">[[#{eventRequest.add.back}]]</a>
+                </div>
+            </div>
+            <form th:action="${requestUri}" method="post">
+                <label class="col-md-2 col-form-label" for="proposedDate1">Proposed Dates</label>
+                <input type="text" th:field="*{eventRequest.proposedDate1}" placeholder="Enter proposed date (YYYY-MM-DD)" required="required" />
+                <input type="text" th:field="*{eventRequest.proposedDate2}" placeholder="Enter proposed date (YYYY-MM-DD)" required="required" />
+                <input type="text" th:field="*{eventRequest.proposedDate3}" placeholder="Enter proposed date (YYYY-MM-DD)" required="required" />
+
+                <div th:replace="~{fragments/forms::inputRow(object='eventRequest', field='postalCode')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='eventRequest', field='streetName')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='eventRequest', field='remarks')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='eventRequest', field='event', required=true, type='select')}" />
+                <input type="submit" th:value="#{eventRequest.add.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

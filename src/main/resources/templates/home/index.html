@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{home.index.headline}]]</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <h1 class="mb-4" th:text="'Welcome, ' + ${username}">Welcome</h1>
+            <div class="col-md-4 mb-5">
+                <h4 class="mb-3">[[#{home.index.exploreEntities}]]</h4>
+                <div class="list-group">
+                    <a th:href="@{/users}" class="list-group-item list-group-item-action">[[#{user.list.headline}]]</a>
+                    <a th:href="@{/companies}" class="list-group-item list-group-item-action">[[#{company.list.headline}]]</a>
+                    <a th:href="@{/vendors}" class="list-group-item list-group-item-action">[[#{vendor.list.headline}]]</a>
+                    <a th:href="@{/events}" class="list-group-item list-group-item-action">[[#{event.list.headline}]]</a>
+                    <a th:href="@{/eventRequests}" class="list-group-item list-group-item-action">[[#{eventRequest.list.headline}]]</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
