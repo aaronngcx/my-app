@@ -1,34 +1,18 @@
 package mhc.my_app.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.util.List;
 import mhc.my_app.model.Status;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class EventRequest {
 
     @Id
-    @Column(nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -57,16 +41,16 @@ public class EventRequest {
     @Enumerated(EnumType.STRING)
     private Status status = Status.PENDING;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "event_id", nullable = true)
     private Event event;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vendor_id", nullable = true)
     private Vendor vendor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
+    @ManyToOne(fetch = FetchType.EAGER) // Keep this line for the Company relationship
+    @JoinColumn(name = "company_id", nullable = true) // Ensure company_id is mapped correctly
     private Company company;
 
     @CreatedDate
@@ -81,7 +65,7 @@ public class EventRequest {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -113,7 +97,7 @@ public class EventRequest {
         return postalCode;
     }
 
-    public void setPostalCode(final String postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
@@ -121,7 +105,7 @@ public class EventRequest {
         return streetName;
     }
 
-    public void setStreetName(final String streetName) {
+    public void setStreetName(String streetName) {
         this.streetName = streetName;
     }
 
@@ -129,7 +113,7 @@ public class EventRequest {
         return remarks;
     }
 
-    public void setRemarks(final String remarks) {
+    public void setRemarks(String remarks) {
         this.remarks = remarks;
     }
 
@@ -137,7 +121,7 @@ public class EventRequest {
         return confirmedDate;
     }
 
-    public void setConfirmedDate(final String confirmedDate) {
+    public void setConfirmedDate(String confirmedDate) {
         this.confirmedDate = confirmedDate;
     }
 
@@ -145,7 +129,7 @@ public class EventRequest {
         return status;
     }
 
-    public void setStatus(final Status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -153,7 +137,7 @@ public class EventRequest {
         return event;
     }
 
-    public void setEvent(final Event event) {
+    public void setEvent(Event event) {
         this.event = event;
     }
 
@@ -161,7 +145,7 @@ public class EventRequest {
         return vendor;
     }
 
-    public void setVendor(final Vendor vendor) {
+    public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
@@ -169,7 +153,7 @@ public class EventRequest {
         return company;
     }
 
-    public void setCompany(final Company company) {
+    public void setCompany(Company company) {
         this.company = company;
     }
 
@@ -177,7 +161,7 @@ public class EventRequest {
         return dateCreated;
     }
 
-    public void setDateCreated(final OffsetDateTime dateCreated) {
+    public void setDateCreated(OffsetDateTime dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -185,8 +169,7 @@ public class EventRequest {
         return lastUpdated;
     }
 
-    public void setLastUpdated(final OffsetDateTime lastUpdated) {
+    public void setLastUpdated(OffsetDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
-
 }

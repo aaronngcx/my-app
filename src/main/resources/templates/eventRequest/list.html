@@ -1,56 +1,225 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layout}">
-    <head>
-        <title>[[#{eventRequest.list.headline}]]</title>
-    </head>
-    <body>
-        <div layout:fragment="content">
-            <div class="d-flex flex-wrap mb-4">
-                <h1 class="flex-grow-1">[[#{eventRequest.list.headline}]]</h1>
-                <div>
-                    <a th:href="@{/eventRequests/add}" class="btn btn-primary ms-2">[[#{eventRequest.list.createNew}]]</a>
+      layout:decorate="~{layout}">
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> <!-- Full jQuery -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>[[#{eventRequest.list.headline}]]</title>
+    <script>
+        $(document).ready(function () {
+            $('#eventModal').on('show.bs.modal', function (event) {
+                const button = $(event.relatedTarget); // Button that triggered the modal
+
+                // Extract data from data-* attributes
+                const eventName = button.data('event');
+                const postalCode = button.data('postal-code');
+                const streetName = button.data('street-name');
+                const remarks = button.data('remarks');
+                const confirmedDate = button.data('confirmed-date');
+                const proposedDateOne = button.data('proposed-date-one');
+                const proposedDateTwo = button.data('proposed-date-two');
+                const proposedDateThree = button.data('proposed-date-three');
+                const status = button.data('status');
+                const vendor = button.data('vendor');
+                const eventId = button.data('id');
+
+                // Update the modal's content
+                const modal = $(this);
+                modal.find('#modalEvent').text(eventName);
+                modal.find('#modalPostalCode').text(postalCode);
+                modal.find('#modalStreetName').text(streetName);
+                modal.find('#modalRemarks').text(remarks);
+                modal.find('#modalConfirmedDate').text(confirmedDate);
+                modal.find('#modalProposedDateOne').text(proposedDateOne);
+                modal.find('#modalProposedDateTwo').text(proposedDateTwo);
+                modal.find('#modalProposedDateThree').text(proposedDateThree);
+                modal.find('#modalStatus').text(status);
+                modal.find('#modalVendor').text(vendor);
+
+                const approveDateSelect = modal.find('#approveDate');
+                modal.find('#approveDate').val('');
+                approveDateSelect.empty();
+                approveDateSelect.append(`<option value="">--- Please Select ---</option>`);
+
+                modal.find('#rejectReason').val('');
+                if (proposedDateOne) {
+                    approveDateSelect.append(`<option value="${proposedDateOne}">${proposedDateOne}</option>`);
+                }
+                if (proposedDateOne) {
+                    approveDateSelect.append(`<option value="${proposedDateTwo}">${proposedDateTwo}</option>`);
+                }
+
+                if (proposedDateThree) {
+                    approveDateSelect.append(`<option value="${proposedDateThree}">${proposedDateThree}</option>`);
+                }
+
+                modal.data('event-id', eventId);
+            });
+
+            // Handle approve button click
+            $('#approveButton').on('click', function() {
+                const eventId = $('#eventModal').data('event-id');
+                const selectedDate = $('#approveDate').val();
+                // AJAX call or form submission for approval can be done here
+                console.log('Approved Event ID:', eventId, 'Date:', selectedDate);
+                // Close modal after approving
+                $('#eventModal').modal('hide');
+            });
+
+            // Handle reject button click
+            $('#rejectButton').on('click', function() {
+                const eventId = $('#eventModal').data('event-id');
+                const rejectReason = $('#rejectReason').val();
+                // AJAX call or form submission for rejection can be done here
+                console.log('Rejected Event ID:', eventId, 'Reason:', rejectReason);
+                // Close modal after rejecting
+                $('#eventModal').modal('hide');
+            });
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="d-flex flex-wrap mb-4">
+        <h1 class="flex-grow-1">[[#{eventRequest.list.headline}]]</h1>
+        <div>
+            <a th:href="@{/eventRequests/add}" class="btn btn-primary ms-2" th:if="${userRole == 'ROLE_HR'}">Request Event</a>
+
+        </div>
+    </div>
+
+    <div th:if="${eventRequests.empty}">[[#{eventRequest.list.empty}]]</div>
+
+    <div th:if="${!eventRequests.empty}" class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead>
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">[[#{eventRequest.event.label}]]</th>
+                <th scope="col">[[#{eventRequest.postalCode.label}]]</th>
+                <th scope="col">[[#{eventRequest.streetName.label}]]</th>
+                <th scope="col">[[#{eventRequest.remarks.label}]]</th>
+                <th scope="col">Proposed Date</th>
+                <th scope="col">[[#{eventRequest.confirmedDate.label}]]</th>
+                <th scope="col">[[#{eventRequest.status.label}]]</th>
+                <th scope="col">[[#{eventRequest.vendor.label}]]</th>
+                <th scope="col">Date Created</th>
+
+                <th><!-- --></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="eventRequest, iterStat : ${eventRequests}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td>[[${eventRequest.event.name}]]</td>
+                <td>[[${eventRequest.postalCode}]]</td>
+                <td>[[${eventRequest.streetName}]]</td>
+                <td>[[${eventRequest.remarks}]]</td>
+                <td>
+                    [[${eventRequest.proposedDate1}]]<span th:if="${eventRequest.proposedDate1} != null"> <br> </span>
+                    [[${eventRequest.proposedDate2}]]<span th:if="${eventRequest.proposedDate2} != null"> <br> </span>
+                    [[${eventRequest.proposedDate3}]]
+                </td>
+
+                <td>[[${eventRequest.confirmedDate}]]</td>
+                <td>[[${eventRequest.status}]]</td>
+                <td>[[${eventRequest.vendor.name}]]</td>
+                <td>[[${eventRequest.dateCreated}]]</td>
+
+                <td>
+                    <div class="float-end text-nowrap">
+<!--                        <a th:href="@{/eventRequests/edit/{id}(id=${eventRequest.id})}" class="btn btn-sm btn-secondary">[[#{eventRequest.list.edit}]]</a>-->
+<!--                        <form th:action="@{/eventRequests/delete/{id}(id=${eventRequest.id})}" th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">-->
+<!--                            <button type="submit" class="btn btn-sm btn-secondary">[[#{eventRequest.list.delete}]]</button>-->
+<!--                        </form>-->
+                        <button class="btn btn-sm btn-info"
+                                data-toggle="modal"
+                                data-target="#eventModal"
+                                th:attr="data-id=${eventRequest.id},
+                                          data-event=${eventRequest.event.id},
+                                          data-postal-code=${eventRequest.postalCode},
+                                          data-street-name=${eventRequest.streetName},
+                                          data-remarks=${eventRequest.remarks},
+                                          data-confirmed-date=${eventRequest.confirmedDate},
+                                          data-proposed-date-one=${eventRequest.proposedDate1},
+                                          data-proposed-date-two=${eventRequest.proposedDate2},
+                                          data-proposed-date-three=${eventRequest.proposedDate3},
+                                          data-status=${eventRequest.status}">
+                            View
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- Event Details Modal -->
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Event Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Event:</strong> <span id="modalEvent"></span></p>
+                    <p><strong>Postal Code:</strong> <span id="modalPostalCode"></span></p>
+                    <p><strong>Street Name:</strong> <span id="modalStreetName"></span></p>
+                    <p><strong>Remarks:</strong> <span id="modalRemarks"></span></p>
+                    <p><strong>Confirmed Date:</strong> <span id="modalConfirmedDate"></span></p>
+                    <p><strong>Proposed Date:</strong> <span id="modalProposedDateOne"></span></p>
+                    <p><strong>Status:</strong> <span id="modalStatus"></span></p>
+                    <p><strong>Vendor:</strong> <span id="modalVendor"></span></p>
+
+                    <div class="form-group mt-3" th:if="${userRole == 'ROLE_VENDOR'}">
+                        <label for="approveDate">Select Approval Date:</label>
+                        <select id="approveDate" class="form-control">
+                            <option value="">-- Select Date --</option>
+                        </select>
+                    </div>
+
+
+
+
+                    <button id="approveButton" class="btn btn-success" th:if="${userRole == 'ROLE_VENDOR'}">Approve</button>
+                    <button id="rejectButton" class="btn btn-danger" th:if="${userRole == 'ROLE_VENDOR'}" data-toggle="modal" data-target="#rejectReasonModal">Reject</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
-            <div th:if="${eventRequests.empty}">[[#{eventRequest.list.empty}]]</div>
-            <div th:if="${!eventRequests.empty}" class="table-responsive">
-                <table class="table table-striped table-hover align-middle">
-                    <thead>
-                        <tr>
-                            <th scope="col">[[#{eventRequest.event.label}]]</th>
-                            <th scope="col">[[#{eventRequest.postalCode.label}]]</th>
-                            <th scope="col">[[#{eventRequest.streetName.label}]]</th>
-                            <th scope="col">[[#{eventRequest.remarks.label}]]</th>
-                            <th scope="col">[[#{eventRequest.confirmedDate.label}]]</th>
-                            <th scope="col">[[#{eventRequest.proposedDate1.label}]]</th>
-                            <th scope="col">[[#{eventRequest.status.label}]]</th>
-                            <th scope="col">[[#{eventRequest.vendor.label}]]</th>
-                            <th><!-- --></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="eventRequest : ${eventRequests}">
-                            <td>[[${eventRequest.event}]]</td>
-                            <td>[[${eventRequest.postalCode}]]</td>
-                            <td>[[${eventRequest.streetName}]]</td>
-                            <td>[[${eventRequest.remarks}]]</td>
-                            <td>[[${eventRequest.confirmedDate}]]</td>
-                            <td>[[${eventRequest.proposedDate1}]]</td>
-                            <td>[[${eventRequest.status}]]</td>
-                            <td>[[${eventRequest.vendor}]]</td>
-                            <td>
-                                <div class="float-end text-nowrap">
-                                    <a th:href="@{/eventRequests/edit/{id}(id=${eventRequest.id})}" class="btn btn-sm btn-secondary">[[#{eventRequest.list.edit}]]</a>
-                                    <form th:action="@{/eventRequests/delete/{id}(id=${eventRequest.id})}"
-                                            th:data-confirm-message="#{delete.confirm}" method="post" class="js-submit-confirm d-inline">
-                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{eventRequest.list.delete}]]</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        </div>
+    </div>
+
+    <!-- Reject Reason Modal -->
+    <div class="modal fade" id="rejectReasonModal" tabindex="-1" role="dialog" aria-labelledby="rejectReasonModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rejectReasonModalLabel">Enter Reject Reason</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="rejectReason">Reason for Rejection:</label>
+                        <textarea id="rejectReason" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="rejectConfirmButton" class="btn btn-danger">Reject</button>
+                </div>
             </div>
         </div>
-    </body>
+    </div>
+</div>
+</body>
 </html>

@@ -14,7 +14,7 @@
         <header class="bg-light">
             <div class="container">
                 <nav class="navbar navbar-light navbar-expand-md">
-                    <a th:href="@{/}" class="navbar-brand">
+                    <a th:href="@{/eventRequests}" class="navbar-brand">
                         <img th:src="@{/images/logo.png}" th:alt="#{app.title}" width="30" height="30" class="d-inline-block align-top">
                         <span class="ps-1">[[#{app.title}]]</span>
                     </a>
@@ -24,20 +24,23 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarToggle">
                         <ul class="navbar-nav ms-auto">
+<!--                            <li class="navbar-item">-->
+<!--                                <a th:href="@{/}" class="nav-link">[[#{navigation.home}]]</a>-->
+<!--                            </li>-->
                             <li class="navbar-item">
-                                <a th:href="@{/}" class="nav-link">[[#{navigation.home}]]</a>
+                                <a th:href="@{/logout}" class="nav-link">Log Out</a>
                             </li>
-                            <li class="navbar-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="navbarEntitiesLink" role="button"
-                                        aria-expanded="false">[[#{navigation.entities}]]</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarEntitiesLink">
-                                    <li><a th:href="@{/users}" class="dropdown-item">[[#{user.list.headline}]]</a></li>
-                                    <li><a th:href="@{/companies}" class="dropdown-item">[[#{company.list.headline}]]</a></li>
-                                    <li><a th:href="@{/vendors}" class="dropdown-item">[[#{vendor.list.headline}]]</a></li>
-                                    <li><a th:href="@{/events}" class="dropdown-item">[[#{event.list.headline}]]</a></li>
-                                    <li><a th:href="@{/eventRequests}" class="dropdown-item">[[#{eventRequest.list.headline}]]</a></li>
-                                </ul>
-                            </li>
+<!--                            <li class="navbar-item dropdown">-->
+<!--                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="navbarEntitiesLink" role="button"-->
+<!--                                        aria-expanded="false">[[#{navigation.entities}]]</a>-->
+<!--                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarEntitiesLink">-->
+<!--                                    <li><a th:href="@{/users}" class="dropdown-item">[[#{user.list.headline}]]</a></li>-->
+<!--                                    <li><a th:href="@{/companies}" class="dropdown-item">[[#{company.list.headline}]]</a></li>-->
+<!--                                    <li><a th:href="@{/vendors}" class="dropdown-item">[[#{vendor.list.headline}]]</a></li>-->
+<!--                                    <li><a th:href="@{/events}" class="dropdown-item">[[#{event.list.headline}]]</a></li>-->
+<!--                                    <li><a th:href="@{/eventRequests}" class="dropdown-item">[[#{eventRequest.list.headline}]]</a></li>-->
+<!--                                </ul>-->
+<!--                            </li>-->
                         </ul>
                     </div>
                 </nav>

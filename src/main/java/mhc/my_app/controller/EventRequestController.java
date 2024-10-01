@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import mhc.my_app.domain.Company;
 import mhc.my_app.domain.Event;
 import mhc.my_app.domain.Vendor;
@@ -29,6 +30,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
 
 @Controller
 @RequestMapping("/eventRequests")
@@ -66,9 +71,32 @@ public class EventRequestController {
 
     @GetMapping
     public String list(final Model model) {
-        model.addAttribute("eventRequests", eventRequestService.findAll());
-        return "eventRequest/list";
+        List<EventRequestDTO> eventRequests = eventRequestService.findAll();
+
+        for (EventRequestDTO eventRequest : eventRequests) {
+            if (eventRequest.getVendor() != null) {
+                System.out.println("Vendor ID: " + eventRequest.getVendor().getId()); // Assuming Vendor has getId()
+                System.out.println("Vendor Name: " + eventRequest.getVendor().getName());
+            } else {
+                System.out.println("Vendor is not set for EventRequest ID: " + eventRequest.getId());
+            }
+        }
+        model.addAttribute("eventRequests", eventRequests);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String role = "UNKNOWN"; // Default role
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            role = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .findFirst()
+                    .orElse("UNKNOWN");
+        }
+
+        model.addAttribute("userRole", role);
+        return "eventRequest/list"; // Your Thymeleaf template for listing events
     }
+
 
     @GetMapping("/add")
     public String add(Model model) {

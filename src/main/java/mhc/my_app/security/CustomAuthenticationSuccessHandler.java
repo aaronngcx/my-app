@@ -12,17 +12,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        // Check if the authenticated user has the 'ROLE_HR' authority
         boolean isHR = authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_HR"));
         boolean isVendor = authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_VENDOR"));
-        if (isHR) {
-            // Redirect HR users to the event requests page
+        if (isHR || isVendor) {
             response.sendRedirect(request.getContextPath() + "/eventRequests");
         } else {
-            // Default behavior: redirect to the homepage or another appropriate page
-            response.sendRedirect(request.getContextPath() + "/home");
+            response.sendRedirect(request.getContextPath() + "/");
         }
     }
 }

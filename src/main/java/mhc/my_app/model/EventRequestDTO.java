@@ -1,137 +1,71 @@
 package mhc.my_app.model;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import mhc.my_app.domain.Event;
+import mhc.my_app.domain.Vendor;
+
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 public class EventRequestDTO {
-
     private Long id;
-
-    @NotNull
     private LocalDate proposedDate1;
-
-    @NotNull
     private LocalDate proposedDate2;
-
-    @NotNull
     private LocalDate proposedDate3;
-
-    @Size(max = 255)
     private String postalCode;
-
-    @Size(max = 255)
     private String streetName;
-
-    @Size(max = 255)
     private String remarks;
-
-    @Size(max = 255)
     private String confirmedDate;
-
     private Status status;
+    private OffsetDateTime dateCreated;
 
-    @NotNull
-    private Long event;
+    private Event event;
+    private Vendor vendor;
 
-    private Long vendor;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    private Long company;
+    public LocalDate getProposedDate1() { return proposedDate1; }
+    public void setProposedDate1(LocalDate proposedDate1) { this.proposedDate1 = proposedDate1; }
 
-    public Long getId() {
-        return id;
-    }
+    public LocalDate getProposedDate2() { return proposedDate2; }
+    public void setProposedDate2(LocalDate proposedDate2) { this.proposedDate2 = proposedDate2; }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
+    public LocalDate getProposedDate3() { return proposedDate3; }
+    public void setProposedDate3(LocalDate proposedDate3) { this.proposedDate3 = proposedDate3; }
 
-    public LocalDate getProposedDate1() {
-        return proposedDate1;
-    }
+    public String getPostalCode() { return postalCode; }
+    public void setPostalCode(String postalCode) { this.postalCode = postalCode; }
 
-    public void setProposedDate1(LocalDate proposedDate1) {
-        this.proposedDate1 = proposedDate1;
-    }
+    public String getStreetName() { return streetName; }
+    public void setStreetName(String streetName) { this.streetName = streetName; }
 
-    public LocalDate getProposedDate2() {
-        return proposedDate2;
-    }
+    public String getRemarks() { return remarks; }
+    public void setRemarks(String remarks) { this.remarks = remarks; }
 
-    public void setProposedDate2(LocalDate proposedDate2) {
-        this.proposedDate2 = proposedDate2;
-    }
+    public String getConfirmedDate() { return confirmedDate; }
+    public void setConfirmedDate(String confirmedDate) { this.confirmedDate = confirmedDate; }
 
-    public LocalDate getProposedDate3() {
-        return proposedDate3;
-    }
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
 
-    public void setProposedDate3(LocalDate proposedDate3) {
-        this.proposedDate3 = proposedDate3;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(final String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public void setStreetName(final String streetName) {
-        this.streetName = streetName;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(final String remarks) {
-        this.remarks = remarks;
-    }
-
-    public String getConfirmedDate() {
-        return confirmedDate;
-    }
-
-    public void setConfirmedDate(final String confirmedDate) {
-        this.confirmedDate = confirmedDate;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(final Status status) {
-        this.status = status;
-    }
-
-    public Long getEvent() {
+    public Event getEvent() {
         return event;
     }
 
-    public void setEvent(final Long event) {
+    public void setEvent(Event event) {
         this.event = event;
     }
 
-    public Long getVendor() {
+    public Vendor getVendor() {
         return vendor;
     }
 
-    public void setVendor(final Long vendor) {
+    public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
 
-    public Long getCompany() {
-        return company;
-    }
+    public OffsetDateTime getDateCreated() { return dateCreated; }
+    public void setDateCreated(OffsetDateTime dateCreated) { this.dateCreated = dateCreated; }
 
-    public void setCompany(final Long company) {
-        this.company = company;
-    }
 
 }
