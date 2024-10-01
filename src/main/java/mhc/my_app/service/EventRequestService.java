@@ -1,6 +1,8 @@
 package mhc.my_app.service;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 import mhc.my_app.domain.*;
@@ -36,6 +38,10 @@ public class EventRequestService {
 
     public List<EventRequestDTO> findAll() {
         final List<EventRequest> eventRequests = eventRequestRepository.findAllWithEvent();
+
+        // Sort the list by ID in ascending order
+        eventRequests.sort(Comparator.comparing(EventRequest::getId));
+
         return eventRequests.stream()
                 .map(eventRequest -> mapToDTO(eventRequest, new EventRequestDTO()))
                 .toList();
@@ -94,7 +100,7 @@ public class EventRequestService {
         eventRequestDTO.setStreetName(eventRequest.getStreetName());
         eventRequestDTO.setRemarks(eventRequest.getRemarks());
         eventRequestDTO.setConfirmedDate(eventRequest.getConfirmedDate());
-        eventRequestDTO.setStatus(Status.PENDING);
+        eventRequestDTO.setStatus(eventRequest.getStatus());
         eventRequestDTO.setDateCreated(eventRequest.getDateCreated()); // Don't set this anew on DTO
         eventRequestDTO.setEvent(eventRequest.getEvent());
         eventRequestDTO.setVendor(eventRequest.getVendor());
@@ -124,5 +130,15 @@ public class EventRequestService {
         eventRequest.setCompany(company);
 
         return eventRequest;
+    }
+
+    public void approveEventRequest(Long id, String approvedDate) {
+        EventRequest eventRequest = eventRequestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Event request not found"));
+
+        eventRequest.setStatus(Status.APPROVED); // Assuming you have an APPROVED status
+        eventRequest.setConfirmedDate(approvedDate); // Parse the date if necessary
+
+        eventRequestRepository.save(eventRequest);
     }
 }

@@ -18,15 +18,12 @@ import mhc.my_app.service.EventRequestService;
 import mhc.my_app.util.CustomCollectors;
 import mhc.my_app.util.WebUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,14 +70,6 @@ public class EventRequestController {
     public String list(final Model model) {
         List<EventRequestDTO> eventRequests = eventRequestService.findAll();
 
-//        for (EventRequestDTO eventRequest : eventRequests) {
-//            if (eventRequest.getVendor() != null) {
-//                System.out.println("Vendor ID: " + eventRequest.getVendor().getId()); // Assuming Vendor has getId()
-//                System.out.println("Vendor Name: " + eventRequest.getVendor().getName());
-//            } else {
-//                System.out.println("Vendor is not set for EventRequest ID: " + eventRequest.getId());
-//            }
-//        }
         model.addAttribute("eventRequests", eventRequests);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String role = "UNKNOWN"; // Default role
@@ -162,4 +151,15 @@ public class EventRequestController {
         return "redirect:/eventRequests";
     }
 
+    @PostMapping("/{id}/approve")
+    public ResponseEntity<String> approve(@PathVariable Long id, @RequestParam String approvedDate) {
+        try {
+            System.out.println("Reach");
+
+            eventRequestService.approveEventRequest(id, approvedDate);
+            return ResponseEntity.ok("Event approved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to approve event: " + e.getMessage());
+        }
+    }
 }

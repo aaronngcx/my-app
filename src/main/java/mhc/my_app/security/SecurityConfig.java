@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import mhc.my_app.security.CustomAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -25,11 +24,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests(authorizeRequests -> authorizeRequests
-                        .anyRequest().authenticated()
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests // Use authorizeHttpRequests for newer versions
+                        .requestMatchers("/eventRequests/**").authenticated() // Ensure this matches your controller path
+                        .anyRequest().permitAll() // Adjust this according to your requirements
                 )
                 .formLogin(formLogin -> formLogin
-                        .successHandler(customAuthenticationSuccessHandler()) // Comment out this line to disable the custom success handler
+                        .successHandler(customAuthenticationSuccessHandler())
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -49,7 +49,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(); // BCrypt password encoder
     }
 
-    // Configure global authentication
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
