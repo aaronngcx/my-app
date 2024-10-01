@@ -26,10 +26,7 @@ public class EventRequest {
     private LocalDate proposedDate3;
 
     @Column
-    private String postalCode;
-
-    @Column
-    private String streetName;
+    private String location;
 
     @Column
     private String remarks;
@@ -93,20 +90,12 @@ public class EventRequest {
         this.proposedDate3 = proposedDate3;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getLocation() {
+        return location;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getRemarks() {

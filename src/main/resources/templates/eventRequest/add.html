@@ -18,8 +18,7 @@
                 <input type="text" th:field="*{eventRequest.proposedDate2}" placeholder="Enter proposed date (YYYY-MM-DD)" required="required" />
                 <input type="text" th:field="*{eventRequest.proposedDate3}" placeholder="Enter proposed date (YYYY-MM-DD)" required="required" />
 
-                <div th:replace="~{fragments/forms::inputRow(object='eventRequest', field='postalCode')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='eventRequest', field='streetName')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='eventRequest', field='location')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='eventRequest', field='remarks')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='eventRequest', field='event', required=true, type='select')}" />
                 <input type="submit" th:value="#{eventRequest.add.headline}" class="btn btn-primary mt-4" />

@@ -16,8 +16,7 @@
 
                 // Extract data from data-* attributes
                 const eventName = button.data('event');
-                const postalCode = button.data('postal-code');
-                const streetName = button.data('street-name');
+                const location = button.data('location');
                 const remarks = button.data('remarks');
                 const confirmedDate = button.data('confirmed-date');
                 const proposedDateOne = button.data('proposed-date-one');
@@ -30,8 +29,7 @@
                 // Update the modal's content
                 const modal = $(this);
                 modal.find('#modalEvent').text(eventName);
-                modal.find('#modalPostalCode').text(postalCode);
-                modal.find('#modalStreetName').text(streetName);
+                modal.find('#modalLocation').text(location);
                 modal.find('#modalRemarks').text(remarks);
                 modal.find('#modalConfirmedDate').text(confirmedDate);
                 modal.find('#modalProposedDateOne').text(proposedDateOne);
@@ -172,7 +170,6 @@
             <tr>
                 <th scope="col">[[#{eventRequest.event.label}]]</th>
                 <th scope="col">Location</th>
-                <th scope="col">[[#{eventRequest.streetName.label}]]</th>
                 <th scope="col">[[#{eventRequest.remarks.label}]]</th>
                 <th scope="col">Proposed Date</th>
                 <th scope="col">[[#{eventRequest.confirmedDate.label}]]</th>
@@ -186,8 +183,7 @@
             <tbody>
             <tr th:each="eventRequest, iterStat : ${eventRequests}">
                 <td>[[${eventRequest.event.name}]]</td>
-                <td>[[${eventRequest.postalCode}]]</td>
-                <td>[[${eventRequest.streetName}]]</td>
+                <td>[[${eventRequest.location}]]</td>
                 <td>[[${eventRequest.remarks}]]</td>
                 <td>
                     [[${eventRequest.proposedDate1}]]<span th:if="${eventRequest.proposedDate1} != null"> <br> </span>
@@ -211,8 +207,7 @@
                                 data-target="#eventModal"
                                 th:attr="data-id=${eventRequest.id},
                                           data-event=${eventRequest.event.id},
-                                          data-postal-code=${eventRequest.postalCode},
-                                          data-street-name=${eventRequest.streetName},
+                                          data-location=${eventRequest.location},
                                           data-remarks=${eventRequest.remarks},
                                           data-confirmed-date=${eventRequest.confirmedDate},
                                           data-proposed-date-one=${eventRequest.proposedDate1},
@@ -241,8 +236,7 @@
                 </div>
                 <div class="modal-body">
                     <p><strong>Event:</strong> <span id="modalEvent"></span></p>
-                    <p><strong>Location:</strong> <span id="modalPostalCode"></span></p>
-                    <p><strong>Street Name:</strong> <span id="modalStreetName"></span></p>
+                    <p><strong>Location:</strong> <span id="modalLocation"></span></p>
                     <p><strong>Remarks:</strong> <span id="modalRemarks"></span></p>
                     <p><strong>Confirmed Date:</strong> <span id="modalConfirmedDate"></span></p>
                     <p><strong>Proposed Date:</strong> <span id="modalProposedDateOne"></span></p>

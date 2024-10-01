@@ -1,6 +1,5 @@
 package mhc.my_app.service;
 
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -75,7 +74,7 @@ public class EventRequestService {
 
         eventRequest.setCompany(company);
         eventRequest.setVendor(vendor);
-        eventRequestDTO.setStatus(Status.PENDING);
+        eventRequest.setStatus(Status.PENDING);
 
         return eventRequestRepository.save(eventRequest).getId();
     }
@@ -97,8 +96,7 @@ public class EventRequestService {
         eventRequestDTO.setProposedDate1(eventRequest.getProposedDate1());
         eventRequestDTO.setProposedDate2(eventRequest.getProposedDate2());
         eventRequestDTO.setProposedDate3(eventRequest.getProposedDate3());
-        eventRequestDTO.setPostalCode(eventRequest.getPostalCode());
-        eventRequestDTO.setStreetName(eventRequest.getStreetName());
+        eventRequestDTO.setLocation(eventRequest.getLocation());
         eventRequestDTO.setRemarks(eventRequest.getRemarks());
         eventRequestDTO.setConfirmedDate(eventRequest.getConfirmedDate());
         eventRequestDTO.setStatus(eventRequest.getStatus());
@@ -114,8 +112,7 @@ public class EventRequestService {
         eventRequest.setProposedDate1(eventRequestDTO.getProposedDate1());
         eventRequest.setProposedDate2(eventRequestDTO.getProposedDate2());
         eventRequest.setProposedDate3(eventRequestDTO.getProposedDate3());
-        eventRequest.setPostalCode(eventRequestDTO.getPostalCode());
-        eventRequest.setStreetName(eventRequestDTO.getStreetName());
+        eventRequest.setLocation(eventRequestDTO.getLocation());
         eventRequest.setRemarks(eventRequestDTO.getRemarks());
         eventRequest.setConfirmedDate(eventRequestDTO.getConfirmedDate());
         eventRequest.setStatus(eventRequestDTO.getStatus());

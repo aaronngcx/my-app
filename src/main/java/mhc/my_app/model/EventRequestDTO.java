@@ -12,8 +12,7 @@ public class EventRequestDTO {
     private LocalDate proposedDate1;
     private LocalDate proposedDate2;
     private LocalDate proposedDate3;
-    private String postalCode;
-    private String streetName;
+    private String location;
     private String remarks;
     private String confirmedDate;
     private Status status;
@@ -54,20 +53,12 @@ public class EventRequestDTO {
         this.proposedDate3 = proposedDate3;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getLocation() {
+        return location;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getStreetName() {
-        return streetName;
-    }
-
-    public void setStreetName(String streetName) {
-        this.streetName = streetName;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getRemarks() {
