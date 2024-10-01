@@ -42,15 +42,15 @@ public class EventRequest {
     private Status status = Status.PENDING;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "event_id", nullable = true)
+    @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vendor_id", nullable = true)
     private Vendor vendor;
 
-    @ManyToOne(fetch = FetchType.EAGER) // Keep this line for the Company relationship
-    @JoinColumn(name = "company_id", nullable = true) // Ensure company_id is mapped correctly
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
     @CreatedDate

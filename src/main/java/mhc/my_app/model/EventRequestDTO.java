@@ -1,5 +1,6 @@
 package mhc.my_app.model;
 
+import mhc.my_app.domain.Company;
 import mhc.my_app.domain.Event;
 import mhc.my_app.domain.Vendor;
 
@@ -17,36 +18,81 @@ public class EventRequestDTO {
     private String confirmedDate;
     private Status status;
     private OffsetDateTime dateCreated;
-
     private Event event;
     private Vendor vendor;
+    private Company company;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public LocalDate getProposedDate1() { return proposedDate1; }
-    public void setProposedDate1(LocalDate proposedDate1) { this.proposedDate1 = proposedDate1; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public LocalDate getProposedDate2() { return proposedDate2; }
-    public void setProposedDate2(LocalDate proposedDate2) { this.proposedDate2 = proposedDate2; }
+    public LocalDate getProposedDate1() {
+        return proposedDate1;
+    }
 
-    public LocalDate getProposedDate3() { return proposedDate3; }
-    public void setProposedDate3(LocalDate proposedDate3) { this.proposedDate3 = proposedDate3; }
+    public void setProposedDate1(LocalDate proposedDate1) {
+        this.proposedDate1 = proposedDate1;
+    }
 
-    public String getPostalCode() { return postalCode; }
-    public void setPostalCode(String postalCode) { this.postalCode = postalCode; }
+    public LocalDate getProposedDate2() {
+        return proposedDate2;
+    }
 
-    public String getStreetName() { return streetName; }
-    public void setStreetName(String streetName) { this.streetName = streetName; }
+    public void setProposedDate2(LocalDate proposedDate2) {
+        this.proposedDate2 = proposedDate2;
+    }
 
-    public String getRemarks() { return remarks; }
-    public void setRemarks(String remarks) { this.remarks = remarks; }
+    public LocalDate getProposedDate3() {
+        return proposedDate3;
+    }
 
-    public String getConfirmedDate() { return confirmedDate; }
-    public void setConfirmedDate(String confirmedDate) { this.confirmedDate = confirmedDate; }
+    public void setProposedDate3(LocalDate proposedDate3) {
+        this.proposedDate3 = proposedDate3;
+    }
 
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getConfirmedDate() {
+        return confirmedDate;
+    }
+
+    public void setConfirmedDate(String confirmedDate) {
+        this.confirmedDate = confirmedDate;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public Event getEvent() {
         return event;
@@ -64,8 +110,20 @@ public class EventRequestDTO {
         this.vendor = vendor;
     }
 
-    public OffsetDateTime getDateCreated() { return dateCreated; }
-    public void setDateCreated(OffsetDateTime dateCreated) { this.dateCreated = dateCreated; }
+    public Company getCompany() {
+        return company;
+    }
 
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public OffsetDateTime getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(OffsetDateTime dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 
 }

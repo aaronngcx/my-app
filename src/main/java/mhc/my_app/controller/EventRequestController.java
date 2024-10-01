@@ -73,14 +73,14 @@ public class EventRequestController {
     public String list(final Model model) {
         List<EventRequestDTO> eventRequests = eventRequestService.findAll();
 
-        for (EventRequestDTO eventRequest : eventRequests) {
-            if (eventRequest.getVendor() != null) {
-                System.out.println("Vendor ID: " + eventRequest.getVendor().getId()); // Assuming Vendor has getId()
-                System.out.println("Vendor Name: " + eventRequest.getVendor().getName());
-            } else {
-                System.out.println("Vendor is not set for EventRequest ID: " + eventRequest.getId());
-            }
-        }
+//        for (EventRequestDTO eventRequest : eventRequests) {
+//            if (eventRequest.getVendor() != null) {
+//                System.out.println("Vendor ID: " + eventRequest.getVendor().getId()); // Assuming Vendor has getId()
+//                System.out.println("Vendor Name: " + eventRequest.getVendor().getName());
+//            } else {
+//                System.out.println("Vendor is not set for EventRequest ID: " + eventRequest.getId());
+//            }
+//        }
         model.addAttribute("eventRequests", eventRequests);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String role = "UNKNOWN"; // Default role

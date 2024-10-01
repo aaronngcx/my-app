@@ -42,6 +42,10 @@ public class Event {
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     public Long getId() {
         return id;
     }
@@ -72,6 +76,14 @@ public class Event {
 
     public void setVendor(final Vendor vendor) {
         this.vendor = vendor;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(final Company company) {
+        this.company = company;
     }
 
     public OffsetDateTime getDateCreated() {
