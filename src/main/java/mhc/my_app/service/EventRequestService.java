@@ -5,6 +5,7 @@ import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
 
+import jakarta.persistence.EntityNotFoundException;
 import mhc.my_app.domain.*;
 import mhc.my_app.model.EventRequestDTO;
 import mhc.my_app.model.Status;
@@ -136,9 +137,21 @@ public class EventRequestService {
         EventRequest eventRequest = eventRequestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event request not found"));
 
-        eventRequest.setStatus(Status.APPROVED); // Assuming you have an APPROVED status
-        eventRequest.setConfirmedDate(approvedDate); // Parse the date if necessary
+        eventRequest.setStatus(Status.APPROVED);
+        eventRequest.setConfirmedDate(approvedDate);
 
         eventRequestRepository.save(eventRequest);
     }
+
+    public void rejectEventRequest(Long id, String reason) {
+        EventRequest eventRequest = eventRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("EventRequest not found"));
+
+        // Set the status to rejected and save the reason
+        eventRequest.setStatus(Status.REJECTED);
+        eventRequest.setRemarks(reason);
+
+        eventRequestRepository.save(eventRequest);
+    }
+
 }

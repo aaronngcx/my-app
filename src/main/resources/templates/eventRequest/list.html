@@ -60,6 +60,29 @@
                 modal.data('event-id', eventId);
             });
 
+            $('#actionSelect').on('change', function() {
+                const selectedAction = $(this).val();
+
+                if (selectedAction === 'approve') {
+                    $('#approveDateGroup').show(); // Show the approval date field
+                    $('#rejectReasonGroup').hide(); // Hide the rejection reason field
+                    $('#rejectButton').hide(); // Hide the reject button
+                    $('#approveButton').show(); // Show the approve button (optional)
+                } else if (selectedAction === 'reject') {
+                    $('#rejectReasonGroup').show(); // Show the rejection reason field
+                    $('#approveDateGroup').hide(); // Hide the approval date field
+                    $('#approveButton').hide(); // Hide the approve button
+                    $('#rejectButton').show(); // Show the reject button (optional)
+                } else {
+                    // Hide both fields and buttons if no valid action is selected
+                    $('#approveDateGroup').hide(); // Hide approval date field
+                    $('#rejectReasonGroup').hide(); // Hide rejection reason field
+                    $('#approveButton').hide(); // Hide the approve button
+                    $('#rejectButton').hide(); // Hide the reject button
+                }
+            });
+
+
             // Handle approve button click
             $('#approveButton').on('click', function() {
                 const eventId = $('#eventModal').data('event-id');
@@ -87,20 +110,47 @@
                         alert('Failed to approve event: ' + xhr.responseText);
                     }
                 });
-                console.log('Approved Event ID:', eventId, 'Date:', selectedDate);
-                // Close modal after approving
                 $('#eventModal').modal('hide');
             });
 
             // Handle reject button click
             $('#rejectButton').on('click', function() {
-                const eventId = $('#eventModal').data('event-id');
-                const rejectReason = $('#rejectReason').val();
-                // AJAX call or form submission for rejection can be done here
-                console.log('Rejected Event ID:', eventId, 'Reason:', rejectReason);
-                // Close modal after rejecting
+                const eventId = $('#eventModal').data('event-id'); // Get the event ID from the modal
+                const rejectReason = $('#rejectReason').val(); // Get the rejection reason from the input field
+                const csrfToken = $('meta[name="_csrf"]').attr('content');
+                const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+
+                // Validate rejectReason to ensure it is not empty
+                if (!rejectReason) {
+                    alert('Please provide a reason for rejection.');
+                    return; // Exit the function if no reason is provided
+                }
+
+                // Perform AJAX call to reject the event request
+                $.ajax({
+                    type: 'POST',
+                    headers: {
+                        [csrfHeader]: csrfToken
+                    },
+                    url: '/eventRequests/' + eventId + '/reject', // Ensure this URL matches your controller's mapping
+                    data: { reason: rejectReason }, // Sending the reject reason in the request body
+                    success: function(response) {
+                        console.log('Success:', response); // Log success message
+                        alert('Event rejected successfully!');
+
+                        location.reload(); // Reload the page to reflect changes
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error); // Log error message
+                        alert('Failed to reject the event: ' + xhr.responseText); // Notify user of failure
+                    }
+                });
+
+                // Close modal after sending the request
                 $('#eventModal').modal('hide');
             });
+
+
         });
     </script>
 </head>
@@ -121,7 +171,7 @@
             <thead>
             <tr>
                 <th scope="col">[[#{eventRequest.event.label}]]</th>
-                <th scope="col">[[#{eventRequest.postalCode.label}]]</th>
+                <th scope="col">Location</th>
                 <th scope="col">[[#{eventRequest.streetName.label}]]</th>
                 <th scope="col">[[#{eventRequest.remarks.label}]]</th>
                 <th scope="col">Proposed Date</th>
@@ -191,7 +241,7 @@
                 </div>
                 <div class="modal-body">
                     <p><strong>Event:</strong> <span id="modalEvent"></span></p>
-                    <p><strong>Postal Code:</strong> <span id="modalPostalCode"></span></p>
+                    <p><strong>Location:</strong> <span id="modalPostalCode"></span></p>
                     <p><strong>Street Name:</strong> <span id="modalStreetName"></span></p>
                     <p><strong>Remarks:</strong> <span id="modalRemarks"></span></p>
                     <p><strong>Confirmed Date:</strong> <span id="modalConfirmedDate"></span></p>
@@ -199,22 +249,38 @@
                     <p><strong>Status:</strong> <span id="modalStatus"></span></p>
                     <p><strong>Vendor:</strong> <span id="modalVendor"></span></p>
 
-                    <div class="form-group mt-3" th:if="${userRole == 'ROLE_VENDOR'}">
-                        <label for="approveDate">Select Approval Date:</label>
-                        <select id="approveDate" class="form-control">
-                            <option value="">-- Select Date --</option>
-                        </select>
+                    <div th:if="${userRole == 'ROLE_VENDOR'}">
+                        <div class="form-group mt-3">
+                            <label for="actionSelect">Action:</label>
+                            <select id="actionSelect" class="form-control">
+                                <option value="">-- Select Action --</option>
+                                <option value="approve">Approve</option>
+                                <option value="reject">Reject</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-3" id="approveDateGroup" style="display: none;">
+                            <label for="approveDate">Select Approval Date:</label>
+                            <select id="approveDate" class="form-control">
+                                <option value="">-- Select Date --</option>
+                                <!-- Populate options dynamically -->
+                            </select>
+                        </div>
                     </div>
 
 
+                    <div class="form-group mt-3" id="rejectReasonGroup" style="display: none;">
+                        <label for="rejectReason">Reason for Rejection:</label>
+                        <textarea id="rejectReason" class="form-control" rows="3"></textarea>
+                    </div>
 
+                    <!-- Conditional rendering based on user role -->
+                    <div class="modal-footer" th:if="${userRole == 'ROLE_VENDOR'}">
+                        <button type="button" id="approveButton" class="btn btn-success">Approve</button>
+                        <button type="button" id="rejectButton" class="btn btn-danger">Reject</button>
+                    </div>
+                </div>
 
-                    <button id="approveButton" class="btn btn-success" th:if="${userRole == 'ROLE_VENDOR'}">Approve</button>
-                    <button id="rejectButton" class="btn btn-danger" th:if="${userRole == 'ROLE_VENDOR'}" data-toggle="modal" data-target="#rejectReasonModal">Reject</button>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
             </div>
         </div>
     </div>

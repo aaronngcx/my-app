@@ -162,4 +162,21 @@ public class EventRequestController {
             return ResponseEntity.status(500).body("Failed to approve event: " + e.getMessage());
         }
     }
+
+    @PostMapping("/{id}/reject")
+    public ResponseEntity<String> reject(@PathVariable Long id, @RequestParam String reason) {
+        try {
+            System.out.println("Rejecting event request with ID: " + id + ", Reason: " + reason);
+
+            // Call the service to handle rejection logic and pass the reason
+            eventRequestService.rejectEventRequest(id, reason);
+
+            return ResponseEntity.ok("Event rejected successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to reject event: " + e.getMessage());
+        }
+    }
+
+
+
 }
